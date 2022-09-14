@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "sdpsnkubecluster-1307"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "sdpsnkubecluster-1307"
+  template:
+    metadata:
+      labels:
+        app: "sdpsnkubecluster-1307"
+    spec:
+      containers:
+        - name: "sdpsnkubecluster-1307"
+          image: "streetnameset.azurecr.io/sdpsnkubecluster"
+          ports:
+          - containerPort: 8080
