@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://sdp-sn-admin:SDP20SNADM%402022@10.137.136.14:27017/orbis_street_name?authSource=admin
+      database: orbis_street_name
+
+
+camel:
+  component:
+    azure-eventhubs:
+      blob-account-name: stsdatabricksdevstorage
+      blob-access-key: JFoSaMosAIrQwJM5Y4GuV0cTfQPk97zeZAe9k/KaVbyoDawpk1Or/gscgaSEjWyhcuLnoBK9lhYNfprYslquWw==
+      blob-container-name: sdp-event-hub-capture-data
+      consumer-group-name: snconsumer
+
+
+sn-eventhubs-connection-strings:
+  connection-string-map:
+    ORCHESTRATOR_SERVICE: Endpoint=sb://sdp-eventhub.servicebus.windows.net/;SharedAccessKeyName=orchestrator_all;SharedAccessKey=Sjwcfbt0zeXPJSwzSmqeRhHDEq6/SlvcTEGupvIi5bs=;EntityPath=orchestrator
+    SEEDER_SERVICE: Endpoint=sb://sdp-eventhub.servicebus.windows.net/;SharedAccessKeyName=conflation-seeder_all;SharedAccessKey=jJGvGPc4zoxvTET9HNjSX+/+9ZgRfSkK1RF7DFtQQfI=;EntityPath=conflation-seeder
+    CHANGELET_PRODUCER_SERVICE: Endpoint=sb://sdp-eventhub-2.servicebus.windows.net/;SharedAccessKeyName=changeletproducer_all;SharedAccessKey=KvbLM+B65eT//MOa3g1GWHy133Re1Iev7sZ28SUkVE4=;EntityPath=changeletproducer
