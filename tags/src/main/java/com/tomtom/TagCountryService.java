@@ -33,6 +33,7 @@ public class TagCountryService {
                 tags.addAll(currentTags.keySet());
             });
         }
+        tags.remove("noname");
         return tags;
     }
 }
