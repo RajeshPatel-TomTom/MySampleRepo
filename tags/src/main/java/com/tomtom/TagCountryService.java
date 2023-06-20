@@ -44,6 +44,7 @@ public class TagCountryService {
                     return currentTags.keySet();
                 }).flatMap(Collection::stream).collect(Collectors.toList());
                 tags.addAll(keys);
+                log.info("done page {} ",page.getPageNumber());
                 return null;
             }));
         }
