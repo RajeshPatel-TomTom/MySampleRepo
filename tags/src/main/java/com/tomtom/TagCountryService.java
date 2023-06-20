@@ -44,12 +44,13 @@ public class TagCountryService {
                     return currentTags.keySet();
                 }).flatMap(Collection::stream).collect(Collectors.toList());
                 tags.addAll(keys);
-                log.info("done page {} ",page.getPageNumber());
+                log.info("done page {} ", page.getPageNumber());
                 return null;
             }));
         }
         executor.waitForCompletion(allJobs);
         tags.remove("noname");
+        log.info("tags {}  ", tags);
         return tags;
     }
 }
