@@ -10,11 +10,6 @@ server:
   servlet:
     context-path: /tags-application
 
-
-logging:
-  file:
-    name: tags-application.log
-
 springdoc:
   swagger-ui:
     use-root-path: true
