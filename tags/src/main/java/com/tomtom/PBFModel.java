@@ -4,7 +4,6 @@
 package com.tomtom;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -53,10 +52,6 @@ public class PBFModel implements Comparable<PBFModel> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @LastModifiedDate
     private Date updatedTimeStamp;
-
-    @JsonProperty(value = "isDeleted")
-    @Builder.Default
-    private boolean isDeleted = false;
 
     @Override
     public int compareTo(PBFModel o) {
