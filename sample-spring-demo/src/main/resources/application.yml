@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://caprod-cpp-pgmnr-001.flatns.net:5432/mnr
+    username: mnr_ro
+    password: mnr_ro
+  application:
+    name: sample-spring-demo
+  main:
+    allow-bean-definition-overriding: true
+
+gss:
+  base-url: "https://matter-ws.92324.orbis.tomtom.com"
+  post-changelets-url: ${gss.base-url}/changelets
+  get-elements-url: ${gss.base-url}/elements
+  get-layers-url: ${gss.base-url}/layers
+  layer-id: 92324
+  orbama:
+    layerId: 2
+    high: 2
+  auth:
+    tenant: "374f8026-7b54-4a3a-b87d-328fa26ec10d"
+    scope: "api://92324-atom-ws-resource/.default"
+    client-id: "31441b93-4f8d-45f7-b980-361c48c51616"
+    secret: "61B8Q~.y2ByeeYZmzeex5TyAFaYPoC0B7gK-Kaz0"
+  query-retry-attempts: 3
