@@ -45,7 +45,7 @@ public class MNRService {
         final Set<String> names = getNames();
         final String eol = System.getProperty("line.separator");
         try (Writer writer = new FileWriter("somefile.csv")) {
-            names.stream().limit(10).forEach(name -> {
+            names.stream().forEach(name -> {
                 try {
                     writer.append(name).append(';').append(getWktGeometry(name)).append(eol);
                 } catch (Exception ex) {
