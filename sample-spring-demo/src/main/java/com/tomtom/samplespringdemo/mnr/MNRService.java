@@ -10,14 +10,10 @@ import org.springframework.stereotype.Service;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -48,6 +44,7 @@ public class MNRService {
             names.stream().forEach(name -> {
                 try {
                     writer.append(name).append(';').append(getWktGeometry(name)).append(eol);
+                    writer.flush();
                 } catch (Exception ex) {
                     log.warn("Error in get wkt of name {} :: Error {}", name, ex.getMessage());
                 }
