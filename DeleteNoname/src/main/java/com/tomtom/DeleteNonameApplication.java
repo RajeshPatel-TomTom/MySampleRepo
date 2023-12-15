@@ -48,7 +48,7 @@ public class DeleteNonameApplication implements CommandLineRunner {
                 final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
                 System.out.println(body);
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
-                Thread.sleep(10000);
+                Thread.sleep(200000);
             }
 
         }
