@@ -35,7 +35,6 @@ public class DeleteNonameApplication implements CommandLineRunner {
             return;
         }
 
-        final AtomicInteger counts = new AtomicInteger();
         final Path noNameFile = Path.of(args[0]);
         final int maxPageSize = args.length > 1 ? Integer.parseInt(args[1]) : 100000;
         if (!Files.exists(noNameFile)) {
@@ -48,7 +47,11 @@ public class DeleteNonameApplication implements CommandLineRunner {
                 final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
                 System.out.println(body);
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
-                Thread.sleep(200000);
+                try {
+                    Thread.sleep(200000);
+                } catch (Exception e) {
+                    System.out.println("Exception while sleeping");
+                }
             }
 
         }
