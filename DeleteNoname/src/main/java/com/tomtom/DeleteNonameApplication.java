@@ -37,7 +37,7 @@ public class DeleteNonameApplication implements CommandLineRunner {
 
         final AtomicInteger counts = new AtomicInteger();
         final Path noNameFile = Path.of(args[0]);
-        final int maxPageSize = args.length > 1 ? Integer.parseInt(args[1]) : 3;
+        final int maxPageSize = args.length > 1 ? Integer.parseInt(args[1]) : 100000;
         if (!Files.exists(noNameFile)) {
             System.out.println("File does not exist");
             return;
