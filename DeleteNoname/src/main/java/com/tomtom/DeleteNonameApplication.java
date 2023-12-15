@@ -1,5 +1,6 @@
 package com.tomtom;
 
+import com.google.common.collect.Lists;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,11 +25,7 @@ public class DeleteNonameApplication implements CommandLineRunner {
 
     @Bean
     public WebClient webClient() {
-        return WebClient.builder()
-                .baseUrl("http://10.137.9.245/sdp-sn-analysis-recovery/v1/roadelements")
-                .defaultCookie("cookie-name", "cookie-value")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
+        return WebClient.builder().baseUrl("http://10.137.9.245/sdp-sn-analysis-recovery/v1/roadelements").defaultCookie("cookie-name", "cookie-value").defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
     @Override
@@ -39,22 +37,20 @@ public class DeleteNonameApplication implements CommandLineRunner {
 
         final AtomicInteger counts = new AtomicInteger();
         final Path noNameFile = Path.of(args[0]);
-        final int maxPageSize = args.length > 1 ? Integer.parseInt(args[1]) : 100000;
+        final int maxPageSize = args.length > 1 ? Integer.parseInt(args[1]) : 3;
         if (!Files.exists(noNameFile)) {
             System.out.println("File does not exist");
             return;
         }
-        try (Stream<String> lines = Files.lines(noNameFile)) {
-            lines.skip(1).collect(Collectors.groupingBy(s -> counts.getAndIncrement() / maxPageSize)).forEach((index, nonameBaseMapIds) -> {
-                System.out.println("processing " + index + " " + nonameBaseMapIds.size());
-                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + nonameBaseMapIds.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
+        try (Stream<String> lines = Files.lines(noNameFile).skip(1)) {
+            final List<List<String>> lists = Lists.partition(lines.collect(Collectors.toList()), maxPageSize);
+            for (List<String> strings : lists) {
+                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
+                System.out.println(body);
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+                Thread.sleep(10000);
+            }
+
         }
 
     }
