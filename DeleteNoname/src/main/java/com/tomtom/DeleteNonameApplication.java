@@ -35,7 +35,12 @@ public class DeleteNonameApplication implements CommandLineRunner {
         }
 
         final Path noNameFile = Path.of(args[0]);
-        final int maxPageSize = args.length > 1 ? Integer.parseInt(args[1]) : 100000;
+        final int maxPageSize = 100000;
+        final Operation operation = args.length > 1 ? Operation.valueOf(args[1]) : null;
+        if (operation == null) {
+            System.out.println("Please provide the operation to be performed");
+            return;
+        }
         if (!Files.exists(noNameFile)) {
             System.out.println("File does not exist");
             return;
@@ -43,9 +48,10 @@ public class DeleteNonameApplication implements CommandLineRunner {
         try (Stream<String> lines = Files.lines(noNameFile).skip(1)) {
             final List<List<String>> lists = Lists.partition(lines.collect(Collectors.toSet()).stream().toList(), maxPageSize);
             System.out.println("Total number of pages to be deleted: " + lists.size());
+            int count = 0;
             for (List<String> strings : lists) {
-                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
-                System.out.println(body);
+                System.out.println("Deleting page: " + count++);
+                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"" + operation + "\"}";
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
                 try {
                     Thread.sleep(500000);
@@ -53,8 +59,14 @@ public class DeleteNonameApplication implements CommandLineRunner {
                     System.out.println("Exception while sleeping " + e.getMessage());
                 }
             }
+            System.out.println("Done deleting");
 
         }
 
+
+    }
+
+    enum Operation {
+        DELETE, REFRESH, UNNAMED
     }
 }
