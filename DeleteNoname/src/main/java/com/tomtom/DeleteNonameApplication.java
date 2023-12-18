@@ -44,11 +44,11 @@ public class DeleteNonameApplication implements CommandLineRunner {
             final List<List<String>> lists = Lists.partition(lines.collect(Collectors.toSet()).stream().toList(), maxPageSize);
             System.out.println("Total number of pages to be deleted: " + lists.size());
             for (List<String> strings : lists) {
-                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"maxPageSize\":" + maxPageSize / 4 + ",\"operation\":\"DELETE\"}";
+                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
                 System.out.println(body);
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
                 try {
-                    Thread.sleep(100000);
+                    Thread.sleep(500000);
                 } catch (Exception e) {
                     System.out.println("Exception while sleeping " + e.getMessage());
                 }
