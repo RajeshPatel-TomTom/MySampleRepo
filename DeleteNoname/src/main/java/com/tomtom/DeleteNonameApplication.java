@@ -12,7 +12,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,11 +44,11 @@ public class DeleteNonameApplication implements CommandLineRunner {
             final List<List<String>> lists = Lists.partition(lines.collect(Collectors.toSet()).stream().toList(), maxPageSize);
             System.out.println("Total number of pages to be deleted: " + lists.size());
             for (List<String> strings : lists) {
-                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"DELETE\"}";
+                final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"maxPageSize\":" + maxPageSize / 4 + ",\"operation\":\"DELETE\"}";
                 System.out.println(body);
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
                 try {
-                    Thread.sleep(100000);
+                    Thread.sleep(5000);
                 } catch (Exception e) {
                     System.out.println("Exception while sleeping " + e.getMessage());
                 }
