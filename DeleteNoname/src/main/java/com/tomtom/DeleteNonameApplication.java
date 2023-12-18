@@ -45,16 +45,17 @@ public class DeleteNonameApplication implements CommandLineRunner {
             System.out.println("File does not exist");
             return;
         }
+        final int n = args.length > 2 ? Integer.valueOf(args[2]) : 0;
         try (Stream<String> lines = Files.lines(noNameFile).skip(1)) {
             final List<List<String>> lists = Lists.partition(lines.collect(Collectors.toSet()).stream().toList(), maxPageSize);
             System.out.println("Total number of pages to be deleted: " + lists.size());
-            int count = 0;
-            for (List<String> strings : lists) {
+            int count = n;
+            for (List<String> strings : lists.stream().skip(n).toList()) {
                 System.out.println("Deleting page: " + count++);
                 final String body = "{\"schema\":\"full\",\"states\":[\"full\"],\"basemapIds\":[" + strings.stream().collect(Collectors.joining(",")) + "],\"orbisIds\":[],\"startPage\":0,\"endPage\":0,\"operation\":\"" + operation + "\"}";
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
                 try {
-                    Thread.sleep(100000);
+                    Thread.sleep(200000);
                 } catch (Exception e) {
                     System.out.println("Exception while sleeping " + e.getMessage());
                 }
