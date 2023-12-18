@@ -48,7 +48,7 @@ public class DeleteNonameApplication implements CommandLineRunner {
                 System.out.println(body);
                 webClient().post().bodyValue(body).retrieve().bodyToMono(String.class).block();
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(100000);
                 } catch (Exception e) {
                     System.out.println("Exception while sleeping " + e.getMessage());
                 }
