@@ -63,7 +63,7 @@ public class DeleteNonameApplication implements CommandLineRunner {
 
         }
 
-
+        System.exit(0);
     }
 
     enum Operation {
